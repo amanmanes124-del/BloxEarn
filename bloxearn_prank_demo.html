@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1b2d4b">
+<title>BloxEarn — Rewards Demo</title>
+<style>
+:root{--bg:#0d1728;--nav:#1b2d4b;--panel:#17263e;--panel2:#203653;--red:#ff4050;--blue:#29436a;--muted:#819bbd;--green:#65c879}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:#f7f9ff;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}button,input{font:inherit}
+header{height:58px;background:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 27px;position:sticky;top:0;z-index:5;box-shadow:0 3px 16px #0002}
+.logo{font-size:31px;font-weight:900;letter-spacing:2px;color:#fff}.logo span{color:var(--red)}
+.nav-actions{display:flex;gap:10px}.nav-actions button{border:0;border-radius:8px;padding:11px 22px;background:#29436a;color:white;font-weight:700;cursor:pointer}.nav-actions .register{background:var(--red)}
+.hero{min-height:470px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:65px 20px 90px;background:radial-gradient(ellipse at 78% 35%,#203b5c 0,transparent 34%),linear-gradient(145deg,#14243a,#0c1728)}
+.hero:before{content:"R$  R$  R$  R$  R$  R$  R$  R$  R$  R$  R$";position:absolute;inset:0;opacity:.035;font-size:44px;font-weight:900;line-height:1.8;word-spacing:20px;overflow:hidden}
+.hero-content{position:relative;max-width:720px}.hero h1{font-size:clamp(30px,4vw,43px);margin:0 0 24px;font-weight:850}.green{color:var(--green)}.primary{border:1px solid var(--red);border-radius:8px;padding:16px 50px;background:#8f2636aa;color:white;font-weight:750;cursor:pointer;box-shadow:0 8px 25px #0002;transition:.2s}.primary:hover{background:var(--red);transform:translateY(-2px)}
+.hero-avatar{position:absolute;right:8%;bottom:28px;font-size:145px;filter:drop-shadow(0 12px 15px #0005)}
+section{padding:48px 20px 60px;text-align:center}.section-title{font-size:24px;margin:0 0 10px}.sub{color:var(--muted);margin:0 auto 34px;max-width:750px;line-height:1.6}
+.steps{max-width:805px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.step{background:var(--panel);border:3px solid #203653;border-radius:10px;padding:20px 22px;min-height:225px}.step .emoji{font-size:65px}.step h3{margin:12px 0;font-size:19px}.step p{color:#9db4d2;line-height:1.55;font-size:14px;margin:0}
+.stats{max-width:800px;margin:0 auto;background:#1b2e4b;border-radius:10px;padding:25px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat strong{display:block;font-size:24px}.stat span{color:var(--red);font-size:12px;font-weight:850}
+.faq{max-width:695px;margin:auto;text-align:left}.faq details{border-bottom:1px solid #29415f;padding:18px 0}.faq summary{font-weight:750;cursor:pointer;list-style:none}.faq summary:after{content:"⌄";float:right;color:#6583aa}.faq p{color:#8da7c8;line-height:1.65}
+.cta{max-width:810px;margin:0 auto 75px;padding:35px 20px;background:linear-gradient(120deg,#68283c,#8b293a);border:1px solid var(--red);border-radius:10px;text-align:center}.cta h2{margin:0 0 28px}
+footer{background:#1d3150;padding:48px 20px 0;color:#a6bbd6}.footer-inner{max-width:950px;margin:auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:25px;padding-bottom:35px}.footer-inner h3{color:white}.footer-inner a{display:block;color:#c4d3e8;text-decoration:none;margin:8px 0;font-size:14px}.copyright{text-align:center;background:#14243a;margin:0 -20px;padding:17px;font-size:13px}
+.modal-backdrop{position:fixed;inset:0;background:#020812c9;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:min(440px,100%);background:#172840;border:1px solid #345071;border-radius:15px;padding:28px;box-shadow:0 25px 80px #0009;text-align:left}.modal h2{margin:0 0 8px}.modal p{color:#9db2cf;line-height:1.5}.modal label{display:block;margin:18px 0 7px;font-weight:700;font-size:14px}.modal input{width:100%;padding:14px;border-radius:8px;border:1px solid #3b5678;background:#0d192b;color:white;outline:none}.modal input:focus{border-color:#6b9bdb}.modal .primary{width:100%;margin-top:18px}.close{float:right;background:none;border:0;color:#a9bdd8;font-size:25px;cursor:pointer}.notice{font-size:12px!important;background:#0e1c30;padding:12px;border-radius:8px}.status{display:none;margin-top:18px;padding:15px;border-radius:8px;background:#153a32;color:#b9f2d4;line-height:1.5}.status.show{display:block}
+@media(max-width:700px){.hero-avatar{opacity:.18;right:0;font-size:125px}.steps{grid-template-columns:1fr;max-width:390px}.step{min-height:0}.stats{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr 1fr}header{padding:0 15px}.logo{font-size:25px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>B</span>lo<span>x</span>E<span>a</span>rn</div>
+  <div class="nav-actions"><button onclick="openModal()">Login</button><button class="register" onclick="openModal()">Register</button></div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Earn free <span class="green">ROBUX</span> by completing tasks</h1>
+      <button class="primary" onclick="openModal()">Start Earning</button>
+    </div>
+    <div class="hero-avatar" aria-hidden="true">🧑‍🔧</div>
+  </div>
+
+  <section>
+    <h2 class="section-title">How It Works</h2>
+    <p class="sub">Explore the demo steps below. This sample website does not provide real Robux or process real rewards.</p>
+    <div class="steps">
+      <article class="step"><div class="emoji">🙋</div><h3>1. Enter Your Username</h3><p>Enter your public Roblox username to see the demonstration confirmation screen.</p></article>
+      <article class="step"><div class="emoji">🎯</div><h3>2. Complete Offers</h3><p>A sample offers area can be connected to legitimate reward providers in a real project.</p></article>
+      <article class="step"><div class="emoji">🎁</div><h3>3. View Your Status</h3><p>See a clearly labelled demo status. No payout is actually created by this sample.</p></article>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Statistics</h2>
+    <p class="sub">Example counters for the website preview</p>
+    <div class="stats">
+      <div class="stat"><strong>2,594,869+</strong><span>DEMO USERS</span></div>
+      <div class="stat"><strong>1,626,349+</strong><span>DEMO TASKS</span></div>
+      <div class="stat"><strong>$361,005+</strong><span>DEMO REWARDS</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="sub">Find answers to common questions about BloxEarn</p>
+    <div class="faq">
+      <details open><summary>What is BloxEarn?</summary><p>BloxEarn is a visual demo of a rewards website layout. It is not affiliated with Roblox and does not issue Robux.</p></details>
+      <details><summary>Is BloxEarn safe to use?</summary><p>This demo only asks for a Roblox username. Never enter your Roblox password on a third-party rewards page.</p></details>
+      <details><summary>How does the demo work?</summary><p>Click Start Earning, enter a username, and the page displays a simulated waiting status.</p></details>
+      <details><summary>How do I withdraw my earnings?</summary><p>There are no real earnings or withdrawals in this demonstration.</p></details>
+    </div>
+  </section>
+
+  <div class="cta"><h2>Explore the BloxEarn Demo</h2><button class="primary" onclick="openModal()">Start Earning</button></div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="logo"><span>B</span>lo<span>x</span>E<span>a</span>rn</div><p>© BloxEarn 2026. Demo site.</p></div>
+    <div><h3>About</h3><a href="#top">Blog</a><a href="#faq">Terms of service</a><a href="#faq">Privacy policy</a></div>
+    <div><h3>Support</h3><a href="#faq">Help Center</a><a href="#faq">How the demo works</a><a href="#faq">Contact</a></div>
+    <div><h3>Socials</h3><a href="#">𝕏　 Discord　▶</a></div>
+  </div>
+  <div class="copyright">This is an independent demonstration and is not affiliated with or sponsored by Roblox. Roblox is a trademark of its respective owner.</div>
+</footer>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="close" aria-label="Close" onclick="closeModal()">×</button>
+    <h2 id="modalTitle">Start Earning</h2>
+    <p>Enter your Roblox username to continue with this website demo.</p>
+    <form id="demoForm">
+      <label for="robloxUsername">Roblox username</label>
+      <input id="robloxUsername" name="username" autocomplete="off" maxlength="20" placeholder="Enter your Roblox username" required>
+      <p class="notice">For this demo, use only your Roblox username. Never enter your real account password on a rewards page.</p>
+      <button class="primary" type="submit">Continue</button>
+    </form>
+    <div class="status" id="statusBox" role="status"></div>
+    <div id="prankPage" style="display:none;margin-top:18px;background:#0d192b;border:1px solid #ff4050;border-radius:12px;padding:22px;text-align:center">
+      <div style="font-size:42px">💀</div>
+      <h2 style="color:#ff5967;margin:8px 0">YOU'RE COOKED, LIL BRO!</h2>
+      <p style="color:#f4f6fb;font-weight:800;font-size:18px">Your Roblox account is about to be hacked...</p>
+      <p style="color:#a9bdd8;line-height:1.6">Scanning username...<br>Checking inventory...<br>Loading maximum panic mode...</p>
+      <div style="height:9px;background:#263c59;border-radius:20px;overflow:hidden;margin:18px 0"><div id="prankProgress" style="height:100%;width:0;background:#ff4050;transition:width 2s ease"></div></div>
+      <h3 style="color:#ffcf70">JUST KIDDING 😂</h3>
+      <p style="color:#b9cbe2;font-size:14px">It's a harmless prank page. Nothing was accessed, hacked, saved, or sent anywhere.</p>
+      <button class="primary" type="button" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+<script>
+const backdrop=document.getElementById('modalBackdrop');
+function openModal(){backdrop.classList.add('show');document.getElementById('statusBox').classList.remove('show');document.getElementById('prankPage').style.display='none';document.getElementById('demoForm').style.display='block';document.getElementById('robloxUsername').focus()}
+function closeModal(){backdrop.classList.remove('show')}
+backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('demoForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const username=document.getElementById('robloxUsername').value.trim();
+ if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){alert('Please enter a valid Roblox username (3–20 letters, numbers, or underscores).');return}
+ document.getElementById('demoForm').style.display='none';
+ const page=document.getElementById('prankPage');
+ page.style.display='block';
+ page.querySelector('p').textContent=`Hey @${username}... your Roblox account is about to be hacked!`;
+ const bar=document.getElementById('prankProgress');
+ bar.style.width='0';
+ requestAnimationFrame(()=>{bar.style.width='100%'});
+
+});
+</script>
+</body>
+</html>
